@@ -14,6 +14,11 @@
 #include <limits.h>
 #include <errno.h>
 
+/* Visual Studio notes:
+ * Unless capn_segment is defined with __declspec(align(64)), check_segment_alignment
+ * Fails to compile in x86 mode, as (sizeof(struct capn_segment)&7) -> (44 & 7) evaluates to 4
+ * Compiles in x64 mode, as (sizeof(struct capn_segment)&7) -> (80 & 7) evaluates to 0 
+ */
 struct check_segment_alignment {
 	unsigned int foo : (sizeof(struct capn_segment)&7) ? -1 : 1;
 };

@@ -100,6 +100,9 @@ struct capn_tree *capn_tree_insert(struct capn_tree *root, struct capn_tree *n);
  * data, len, cap, and user should all set by the user. Other values
  * should be zero initialized.
  */
+#ifdef _MSC_VER
+__declspec(align(64))
+#endif
 struct capn_segment {
 	struct capn_tree hdr;
 	struct capn_segment *next;
