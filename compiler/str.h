@@ -9,6 +9,7 @@
 
 #include <capnp_c.h>
 #include <stdlib.h>
+#include <stdarg.h>
 
 struct str {
 	char *str;
