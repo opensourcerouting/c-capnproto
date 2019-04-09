@@ -11,6 +11,7 @@
 #ifndef CAPNP_C_H
 #define CAPNP_C_H
 
+#ifndef __KERNEL__
 #include <stdint.h>
 #include <stdio.h>
 #include <unistd.h>
@@ -19,6 +20,14 @@
 #include <endian.h>
 #endif
 
+#else /* ! __KERNEL__ */
+#include <linux/types.h>
+#define free kfree
+#define malloc(a) kmalloc(a,GFP_KERNEL)
+#define calloc(a,b) kcalloc(a,b,GFP_KERNEL)
+#define UINT32_MAX UINT_MAX
+#define FILE void
+#endif /* ! __KERNEL__ */
 /* ssize_t is a POSIX type, not an ISO C one...
  * Windows seems to only have SSIZE_T in BaseTsd.h
  */
@@ -412,7 +421,7 @@ union capn_conv_f64 {
 	uint64_t u;
 	double f;
 };
-
+#ifndef __KERNEL__
 CAPN_INLINE float capn_to_f32(uint32_t v) {
 	union capn_conv_f32 u;
 	u.u = v;
@@ -423,6 +432,7 @@ CAPN_INLINE double capn_to_f64(uint64_t v) {
 	u.u = v;
 	return u.f;
 }
+#endif /* ! __KERNEL */
 CAPN_INLINE uint32_t capn_from_f32(float v) {
 	union capn_conv_f32 u;
 	u.f = v;
