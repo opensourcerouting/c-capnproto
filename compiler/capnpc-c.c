@@ -1179,14 +1179,22 @@ int main() {
 	struct node *file_node, *n;
 	struct node *all_files = NULL, *all_structs = NULL;
 	int i, j;
+	uint64_t total_len=0;
+	struct capn_segment *current_seg;
 
-	if (capn_init_fp(&capn, stdin, 0)) {
+	if (capn_init_fp(&capn, stdin, 0)==-1) {
 		fprintf(stderr, "failed to read schema from stdin\n");
 		return -1;
 	}
 
-	g_valseg.data = calloc(1, capn.seglist->len);
-	g_valseg.cap = capn.seglist->len;
+	current_seg = capn.seglist;
+	do{
+		total_len+=current_seg->len;
+		current_seg = current_seg->next;
+	}while(current_seg);
+
+	g_valseg.data = calloc(1, total_len);
+	g_valseg.cap = total_len;
 
 	root.p = capn_getp(capn_root(&capn), 0, 1);
 	read_CodeGeneratorRequest(&req, root);
