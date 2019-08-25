@@ -23,7 +23,7 @@ capnpc compiler/test.capnp -oc
 ## Building on Linux
 
 ```sh
-git clone https://github.com/opensourcerouting/c-capnproto
+git clone https://github.com/yeger00/c-capnproto
 cd c-capnproto
 git submodule update --init --recursive
 autoreconf -f -i -s
