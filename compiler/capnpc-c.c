@@ -113,16 +113,13 @@ static void resolve_names(struct str *b, struct node *n, capn_text name, struct 
 static void define_enum(struct node *n) {
 	int i;
 
-	str_addf(&HDR, "\nenum %s {", n->name.str);
+	str_addf(&HDR, "\ntypedef uint16_t %s;", n->name.str);
 	for (i = 0; i < capn_len(n->n._enum.enumerants); i++) {
 		struct Enumerant e;
 		get_Enumerant(&e, n->n._enum.enumerants, i);
-		if (i) {
-			str_addf(&HDR, ",");
-		}
-		str_addf(&HDR, "\n\t%s_%s = %d", n->name.str, e.name.str, i);
+		str_addf(&HDR, "\n#define %s_%s (%dU)", n->name.str, e.name.str, i);
 	}
-	str_addf(&HDR, "\n};\n");
+	str_addf(&HDR, "\n\n");
 }
 
 static void decode_value(struct value* v, Type_ptr type, Value_ptr value, const char *symbol) {
@@ -175,7 +172,7 @@ static void decode_value(struct value* v, Type_ptr type, Value_ptr value, const 
 		v->tname = "capn_data";
 		break;
 	case Type__enum:
-		v->tname = strf(&v->tname_buf, "enum %s", find_node(v->t._enum.typeId)->name.str);
+		v->tname = strf(&v->tname_buf, "%s", find_node(v->t._enum.typeId)->name.str);
 		break;
 	case Type__struct:
 	case Type__interface:
