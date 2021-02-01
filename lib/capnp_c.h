@@ -15,8 +15,10 @@
 #include <stdio.h>
 #include <unistd.h>
 
-#if defined(unix) && !defined(__APPLE__)
+#if defined(unix) && !defined(__APPLE__) && !defined(__FreeBSD__)
 #include <endian.h>
+#elif defined(__FreeBSD__)
+#include <sys/endian.h>
 #endif
 
 /* ssize_t is a POSIX type, not an ISO C one...
