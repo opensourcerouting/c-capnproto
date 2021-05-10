@@ -408,7 +408,7 @@ int capn_write_fd(struct capn *c, ssize_t (*write_fd)(int fd, const void *p, siz
 	return datasz;
 }
 
-int capn_size(struct capn *c)
+int64_t capn_size(struct capn *c)
 {
 	size_t headersz, datasz = 0;
 	struct capn_ptr root;
@@ -431,5 +431,5 @@ int capn_size(struct capn *c)
 	if (0 != seg)
 		return -1;
 
-	return (int) headersz+datasz;
+	return (int64_t)(headersz + datasz);
 }

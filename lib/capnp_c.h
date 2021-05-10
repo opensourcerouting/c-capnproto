@@ -282,7 +282,7 @@ int capn_init_mem(struct capn *c, const uint8_t *p, size_t sz, int packed);
  * input. A buffer of this size can then be passed to capn_write_mem() without
  * fear of truncation (again, only in the unpacked case).
  */
-int capn_size(struct capn *c);
+int64_t capn_size(struct capn *c);
 
 /* capn_write_(fp|mem) writes segments to the file/memory buffer in
  * serialized form and returns the number of bytes written.
