@@ -12,12 +12,17 @@
 #endif
 
 #include "capnp_c.h"
-
+#ifndef __KERNEL__
 #include <stdlib.h>
 #include <string.h>
 #ifndef _MSC_VER
 #include <sys/param.h>
-#endif
+#endif /* _MSC_VER */
+
+#else /* ! __KERNEL__ */
+#include <linux/string.h>
+#endif /* ! __KERNEL__ */
+
 
 #define STRUCT_PTR 0
 #define LIST_PTR 1

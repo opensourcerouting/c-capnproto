@@ -1,0 +1,1 @@
+../../tests/addressbook.capnp

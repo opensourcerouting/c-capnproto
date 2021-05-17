@@ -14,10 +14,14 @@
 
 #include "capnp_c.h"
 #include "capnp_priv.h"
+#ifndef __KERNEL__
 #include <stdlib.h>
 #include <string.h>
 #include <limits.h>
 #include <errno.h>
+#else /* ! __KERNEL__ */
+#include <linux/slab.h>
+#endif /* ! __KERNEL__ */
 
 /*
  * 8 byte alignment is required for struct capn_segment.
@@ -82,6 +86,7 @@ void capn_reset_copy(struct capn *c) {
 #define ZBUF_SZ 4096
 
 static int read_fp(void *p, size_t sz, FILE *f, struct capn_stream *z, uint8_t* zbuf, int packed) {
+#ifndef __KERNEL__
 	if (f && packed) {
 		z->next_out = (uint8_t*) p;
 		z->avail_out = sz;
@@ -99,7 +104,9 @@ static int read_fp(void *p, size_t sz, FILE *f, struct capn_stream *z, uint8_t* 
 	} else if (f && !packed) {
 		return fread(p, sz, 1, f) != 1;
 
-	} else if (packed) {
+	} else
+#endif /* ! __KERNEL__ */
+		if (packed) {
 		z->next_out = (uint8_t*) p;
 		z->avail_out = sz;
 		return capn_inflate(z) != 0;
@@ -321,9 +328,12 @@ static int _write_fd(ssize_t (*write_fd)(int fd, const void *p, size_t count), i
 	while (sent < count) {
 		ret = write_fd(fd, ((uint8_t*)p)+sent, count-sent);
 		if (ret < 0) {
+#ifndef __KERNEL__
+			// Still not sure about this interface
 			if (errno == EAGAIN || errno == EINTR)
 				continue;
 			else
+#endif /* ! __KERNEL__ */
 				return -1;
 		}
 		sent += ret;
