@@ -745,6 +745,8 @@ static const char *field_name(struct field *f) {
 		"restrict", "_Alignas", "_Alignof", "_Atomic", "_Bool",
 		"_Complex", "_Generic", "_Imaginary", "_Noreturn", "_Static_assert",
 		"_Thread_local",
+		/* capn reserved for parameter names */
+		"p",
 	};
 
 	size_t i;
