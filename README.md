@@ -6,13 +6,7 @@ efficient protocol for sharing data and capabilities.
 
 ## UNMAINTAINED
 
-This project is currently **NOT MAINTAINED**.  If you are interested in
-taking over maintenance and/or need this for some project, please look at
-issue https://github.com/opensourcerouting/c-capnproto/issues/55
-
-No releases will be made.  PRs may sit unreviewed for multiple years.  **PRs
-MAY get merged WITHOUT ANY REVIEW, as a last ditch attempt to not waste
-people's efforts on PRs.  This means things may break completely.**
+This project is **NOT MAINTAINED** anymore. Use [https://gitlab.com/dkml/ext/c-capnproto] fork instead. 
 
 > ## Security warning!
 
